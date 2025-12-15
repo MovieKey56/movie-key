@@ -33,34 +33,125 @@
   .post-frame {
     min-height: 100vh;
   }
+
+  /* ================= 18+ POPUP ================= */
+  .age-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.96);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .age-box {
+    background: #0b0b0b;
+    border-radius: 14px;
+    padding: 22px;
+    width: 90%;
+    max-width: 360px;
+    text-align: center;
+    border: 1px solid #222;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  }
+
+  .age-box h2 {
+    color: #fff;
+    margin: 0 0 10px;
+    font-size: 20px;
+  }
+
+  .age-box p {
+    color: #bbb;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+
+  .age-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .age-buttons button {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 25px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .btn-yes {
+    background: #e50914;
+    color: #fff;
+  }
+
+  .btn-no {
+    background: #333;
+    color: #fff;
+  }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
+<!-- ================= 18+ AGE POPUP ================= -->
+<div class="age-overlay" id="agePopup">
+  <div class="age-box">
+    <h2>🔞 Age Restricted</h2>
+    <p>
+      This website contains adult content.<br>
+      You must be <b>18 years or older</b> to enter.
+    </p>
+
+    <div class="age-buttons">
+      <button class="btn-yes" onclick="acceptAge()">I am 18+</button>
+      <button class="btn-no" onclick="denyAge()">Exit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
 <iframe 
   src="header.html" 
   class="header-frame" 
   scrolling="no">
 </iframe>
 
-<!-- POSTS -->
+<!-- ================= POSTS ================= -->
 <iframe 
   src="post.html" 
   class="post-frame">
 </iframe>
 
-<!-- FOOTER -->
+<!-- ================= FOOTER ================= -->
 <iframe 
   src="footer.html" 
   class="footer-frame" 
   scrolling="no">
 </iframe>
 
-<!-- MAIN JS -->
+<!-- ================= MAIN JS ================= -->
 <script>
-/* SEARCH POSTS */
+/* ===== AGE CHECK ===== */
+window.onload = function () {
+  if (localStorage.getItem("ageAccepted") === "yes") {
+    document.getElementById("agePopup").style.display = "none";
+  }
+};
+
+function acceptAge() {
+  localStorage.setItem("ageAccepted", "yes");
+  document.getElementById("agePopup").style.display = "none";
+}
+
+function denyAge() {
+  window.location.href = "https://www.google.com";
+}
+
+/* ===== SEARCH POSTS ===== */
 function searchPosts() {
   var headerFrame = document.querySelector('.header-frame');
   var postFrame   = document.querySelector('.post-frame');
@@ -87,7 +178,7 @@ function searchPosts() {
   });
 }
 
-/* HOME BUTTON – SHOW ALL */
+/* ===== HOME BUTTON ===== */
 function goHome() {
   var postFrame = document.querySelector('.post-frame');
   if (!postFrame.contentWindow) return;
@@ -99,7 +190,6 @@ function goHome() {
     post.style.display = "block";
   });
 
-  // clear search input
   var headerFrame = document.querySelector('.header-frame');
   var input = headerFrame.contentWindow.document
     .getElementById("searchInput");
@@ -109,3 +199,4 @@ function goHome() {
 
 </body>
 </html>
+
